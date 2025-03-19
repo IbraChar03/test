@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "articles")
@@ -26,4 +28,10 @@ public class Article {
     public ArticleCategoryEnum category;
     public Boolean isPublished;
     public ArticleLanguageEnum language;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CarouselArticle> carousels = new ArrayList<>();
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BoxArticle> boxes = new ArrayList<>();
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TagArticle> tags = new ArrayList<>();
 }
