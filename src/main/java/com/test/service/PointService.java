@@ -22,8 +22,15 @@ public class PointService {
         point.setY(request.getY());
         return pointRepository.save(point);
     }
+    public void deletePoint(String id){
+        pointRepository.deleteById(Long.parseLong(id));
+    }
 
     public List<Point> getPoints(){
         return pointRepository.findAll();
+    }
+
+    public boolean existsById(String id) {
+        return pointRepository.existsById(Long.valueOf(id));
     }
 }

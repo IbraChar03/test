@@ -6,6 +6,7 @@ import com.test.mapper.PointMapper;
 import com.test.service.PointService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,14 @@ public class SpaceController {
     public ResponseEntity<List<PointResponseDto>> getPoints(){
         var list = pointService.getPoints();
         return ResponseEntity.ok(pointMapper.toResponseListDto(list));
+    }
+    @DeleteMapping("/delete-point/{id}")
+    public ResponseEntity<?> deletePoint(@PathVariable String id){
+        if (pointService.existsById(id)) {
+            pointService.deletePoint(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
