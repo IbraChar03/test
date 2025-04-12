@@ -13,7 +13,7 @@ public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int x;
-    private int y;
+    private Integer x;
+    private Integer y;
 
 }
