@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/space")
@@ -23,8 +22,13 @@ public class SpaceController {
         this.pointService = pointService;
         this.pointMapper = pointMapper;
     }
-    @PostMapping("/point")
+    @PostMapping("/create-point")
     public ResponseEntity<PointResponseDto> createPoint(@RequestBody PointRequestDto request){
         return ResponseEntity.ok(pointMapper.toResponseDto(pointService.createPoint(request)));
+    }
+    @GetMapping("/points")
+    public ResponseEntity<List<PointResponseDto>> getPoints(){
+        var list = pointService.getPoints();
+        return ResponseEntity.ok(pointMapper.toResponseListDto(list));
     }
 }

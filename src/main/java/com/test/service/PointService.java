@@ -6,6 +6,8 @@ import com.test.repository.PointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PointService {
     private final PointRepository pointRepository;
@@ -19,5 +21,9 @@ public class PointService {
         point.setX(request.getX());
         point.setY(request.getY());
         return pointRepository.save(point);
+    }
+
+    public List<Point> getPoints(){
+        return pointRepository.findAll();
     }
 }
