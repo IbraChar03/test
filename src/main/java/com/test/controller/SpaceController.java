@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping(value = "/space")
 public class SpaceController {
     private final PointService pointService;
     private final PointMapper pointMapper;
@@ -27,26 +26,24 @@ public class SpaceController {
         this.pointService = pointService;
         this.pointMapper = pointMapper;
     }
-    @PostMapping("/create-point")
+
+    @PostMapping("/point")    // create a point
     public ResponseEntity<PointResponseDto> createPoint(@RequestBody PointRequestDto request){
         return ResponseEntity.ok(pointMapper.toResponseDto(pointService.createPoint(request)));
     }
-    @GetMapping("/points")
+    @GetMapping("/space") // get all points
     public ResponseEntity<List<PointResponseDto>> getPoints(){
         var list = pointService.getPoints();
         return ResponseEntity.ok(pointMapper.toResponseListDto(list));
     }
-    @DeleteMapping("/delete-point/{id}")
-    public ResponseEntity<?> deletePoint(@PathVariable String id){
-        if (pointService.existsById(id)) {
-            pointService.deletePoint(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+
+    @DeleteMapping("/space")  // delete all points
+    public ResponseEntity<?> deletePoints(){
+        pointService.deletePoints();
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/line-segments/{n}")
+    @GetMapping("/lines/{n}") // get all line segments passing through at least N points
     public ResponseEntity<List<Set<PointResponseDto>>> getLineSegments(@PathVariable String n) {
         List<Set<Point>> lineSegments = pointService.getLineSegments(Integer.valueOf(n));
         List<Set<PointResponseDto>> response = new ArrayList<>();

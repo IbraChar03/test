@@ -23,8 +23,8 @@ public class PointService {
         point.setY(request.getY());
         return pointRepository.save(point);
     }
-    public void deletePoint(String id){
-        pointRepository.deleteById(Long.parseLong(id));
+    public void deletePoints(){
+        pointRepository.deleteAll();
     }
 
     public List<Point> getPoints(){
