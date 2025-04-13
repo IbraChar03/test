@@ -2,6 +2,7 @@ package com.test.controller;
 
 import com.test.dto.request.PointRequestDto;
 import com.test.dto.response.PointResponseDto;
+import com.test.entity.Point;
 import com.test.mapper.PointMapper;
 import com.test.service.PointService;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/space")
@@ -40,5 +44,21 @@ public class SpaceController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @GetMapping("/line-segments/{n}")
+    public ResponseEntity<List<Set<PointResponseDto>>> getLineSegments(@PathVariable String n) {
+        List<Set<Point>> lineSegments = pointService.getLineSegments(Integer.valueOf(n));
+        List<Set<PointResponseDto>> response = new ArrayList<>();
+
+        for (Set<Point> segment : lineSegments) {
+            Set<PointResponseDto> responseSegment = new HashSet<>();
+            for (Point point : segment) {
+                responseSegment.add(pointMapper.toResponseDto(point));
+            }
+            response.add(responseSegment);
+        }
+
+        return ResponseEntity.ok(response);
     }
 }
